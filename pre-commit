@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MAX_FILE_SIZE_ALLOWED_IN_BYTES=1048576
+CHANGED_FILES=$(git status --porcelain | awk '{print $NF}')
+
+for file in $CHANGED_FILES; do
+	FILE_SIZE_IN_BYTES=$(du -b $file | awk '{print $1}')
+	if [ $FILE_SIZE_IN_BYTES -gt $MAX_FILE_SIZE_ALLOWED_IN_BYTES ]
+	then
+		exit 1
+	fi
+done
+exit 0
