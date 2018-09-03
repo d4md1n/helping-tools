@@ -44,7 +44,8 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "/home/vasilis/IdeaProjects", "/home/vagrant/vagrant_data"
+  config.vm.synced_folder "/Users/vassilis.simeonidis/Documents", "/home/vagrant/vagrant_data"
+  #config.vm.synced_folder ".", "/vagrant"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -64,20 +65,33 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+
+  config.vm.provision "shell", inline: <<-SHELL
+
+    apt-get update
+    apt-get install -y xinit openbox-lxde-session obconf menu obmenu
+    mkdir /etc/skel/.config
+    cp -R /etc/xdg/openbox /etc/skel
+    cp /var/lib/openbox/debian-menu.xml /etc/skel/openbox/debian-menu.xml
+    openbox --reconfigure
+
+    apt-get remove -y pcmanfm
+    apt-get install -y nautilus
+	apt-get install -y gedit htop vim terminology firefox
+    apt-get install -y nitrogen git
+    apt-get install -y software-properties-common
+	apt-get install openjdk-11-jdk
+	
+	apt-get install -y snapd
+	snap install -y slack --classic
+	snap install -y intellij-idea-community --classic
+
+  SHELL
+
   config.vm.provider "virtualbox" do |v|
-    v.gui = false
+    v.gui = true
     v.name = 'my-motori'
-    v.memory = 10240 # 10GB
+    v.memory = 14000
     v.cpus = 6
   end
 end
-
-###NOTES###
-#vagrant root code is vagrant
-#ssh -X -C -p 2222 vagrant@localhost terminology
-#append on your .bashrc or .zshrc file
-#export LIBGL_ALWAYS_INDIRECT=1
