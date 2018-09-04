@@ -77,14 +77,19 @@ Vagrant.configure("2") do |config|
 
     apt-get remove -y pcmanfm
     apt-get install -y nautilus
-	apt-get install -y gedit htop vim terminology firefox
+    apt-get install -y gedit htop vim terminology firefox
     apt-get install -y nitrogen git
     apt-get install -y software-properties-common
-	apt-get install openjdk-11-jdk
-	
-	apt-get install -y snapd
-	snap install -y slack --classic
-	snap install -y intellij-idea-community --classic
+    apt-get install openjdk-11-jdk
+
+    apt-get install -y snapd
+    snap install -y slack --classic
+    snap install -y intellij-idea-community --classic
+    
+    apt-get install -y zsh curl
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+    echo "PATH=\"$PATH:/snap/bin\" >> /etc/skel/.zshrc
 
   SHELL
 
