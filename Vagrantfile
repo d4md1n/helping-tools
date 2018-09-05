@@ -76,11 +76,12 @@ Vagrant.configure("2") do |config|
     openbox --reconfigure
 
     apt-get remove -y pcmanfm
-    apt-get install -y nautilus notify-osd
+    apt-get install -y nautilus
+    apt-get install -y notify-osd
     apt-get install -y gedit htop vim terminology firefox
     apt-get install -y nitrogen git
     apt-get install -y software-properties-common
-    apt-get install openjdk-11-jdk
+    apt-get install -y openjdk-11-jdk
 
     apt-get install -y snapd
     snap install -y slack --classic
