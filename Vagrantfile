@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "/Users/vassilis.simeonidis/Documents", "/home/vagrant/vagrant_data"
+  config.vm.synced_folder "/Users/D4md1/Documents", "/home/vagrant/vagrant_data"
   #config.vm.synced_folder ".", "/vagrant"
 
   # Provider-specific configuration so you can fine-tune various
@@ -70,30 +70,28 @@ Vagrant.configure("2") do |config|
 
     apt-get update
     apt-get install -y xinit openbox-lxde-session obconf menu obmenu
-    mkdir /etc/skel/.config
-    cp -R /etc/xdg/openbox /etc/skel
-    cp /var/lib/openbox/debian-menu.xml /etc/skel/openbox/debian-menu.xml
-    openbox --reconfigure
 
     apt-get remove -y pcmanfm
     apt-get install -y nautilus
     apt-get install -y notify-osd
     apt-get install -y gedit htop vim terminology firefox
     apt-get install -y nitrogen git
-    apt-get install -y software-properties-common
     apt-get install -y openjdk-11-jdk
 
-    apt-get install -y snapd
-    snap install -y slack --classic
-    snap install -y intellij-idea-community --classic
-    
-    apt-get install -y zsh curl
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-    echo "PATH=\"$PATH:/snap/bin\" >> /etc/skel/.zshrc
-
+    apt-get install -y virtualbox-guest-x11
+    apt-get install -y curl 
+    apt-get install -y zsh
+    apt-get install -y docker.io docker-compose
   SHELL
 
+  config.vm.provision :shell, privileged: false, inline: <<-SHELL
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+    mkdir ~/.config/openbox
+    cp -R /etc/xdg/openbox/ ~/.config/openbox/
+    cp /var/lib/openbox/debian-menu.xml ~/.config/openbox/debian-menu.xml
+  SHELL
+  config.vm.provision "shell", inline: "chsh -s /bin/zsh vagrant"
   config.vm.provider "virtualbox" do |v|
     v.gui = true
     v.name = 'my-motori'
